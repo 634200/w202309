@@ -59,7 +59,7 @@ public class Main {
                 mergeList = new ArrayList<>();
             }
             for (Path vcfFile : vcfFiles) {
-                System.out.println("读取" + pathStr + "...");
+                System.out.println("读取" + vcfFile + "...");
                 List<VCard> vCard = Ezvcard.parse(vcfFile).all();
                 VCard card = vCard.get(0);
                 mergeList.add(card);
@@ -68,10 +68,9 @@ public class Main {
             System.out.println("读取失败");
         }
 
-        List<VCard> all = Ezvcard.parse(path).all();
         System.out.println("读取完成");
-        System.out.println("共读取" + all.size() + "个联系人");
-        return all;
+        System.out.println("共读取" + mergeList.size() + "个联系人");
+        return mergeList;
     }
 
     // 创建一个输出流
@@ -131,19 +130,22 @@ public class Main {
         }
     }
 
-    // 使用vscode逐个打开文件
-    public static void open() throws IOException {
+    // 处理冲突
+    public static void handleConflict() throws IOException {
         List<Path> paths = scan(Paths.get("./tmp"));
+        if (paths.size() < 1) {
+            System.out.println("恭喜，没有冲突需要处理");
+            return;
+        }
         for (int i = 0; i < paths.size(); i++) {
             Path path = paths.get(i);
-            System.out.println((i + 1) + "/" + paths.size() + " " + path);
+            System.out.print((i + 1) + "/" + paths.size() + " " + path);
             Runtime.getRuntime().exec("cmd /c code " + path.toString());
             // 按任意键继续
             System.in.read();
+            System.in.read();// 回车会被当成两个字符
         }
-    }
 
-    public static void mergeOnly() throws IOException {
         List<VCard> vCards = read("./tmp");
         sort(vCards);
         write(vCards);
@@ -156,14 +158,11 @@ public class Main {
         List<VCard> mergedCards = merge();
         sort(mergedCards);
         write(mergedCards);
-
-        // 处理冲突
-        open();
-        mergeOnly();
+        handleConflict();
     }
 
     public static void main(String[] args) throws IOException {
-        process("./1691660368133.vcf");
+        process("./1691723970765.vcf");
     }
 
 }
