@@ -95,7 +95,7 @@ public class Main {
         for (VCard vCard : vCards) {
             String fn = vCard.getFormattedName().getValue();
             try (OutputStreamWriter osw = getOneOutputStreamWriter("./tmp/" + fn + ".vcf", true)) {
-                Ezvcard.write(vCard).go(osw);
+                Ezvcard.write(vCard).prodId(false).go(osw);
             }
         }
         System.out.println("mapped");
@@ -126,7 +126,7 @@ public class Main {
     public static void write(List<VCard> vCards) throws IOException {
         System.out.println("写出" + vCards.size() + "个联系人");
         try (OutputStreamWriter osw = getOneOutputStreamWriter(null, false)) {
-            Ezvcard.write(vCards).go(osw);
+            Ezvcard.write(vCards).prodId(false).go(osw);
             System.out.println("写出完成");
         }
     }
