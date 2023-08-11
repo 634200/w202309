@@ -1,12 +1,7 @@
 package com.xftxyz.vcfparser;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,20 +29,64 @@ public class Main {
             if (fn1 == null || fn2 == null) {
                 return 0;
             }
-            // System.out.println(fn1.getValue() + ":" + fn2.getValue());
             return collator.compare(fn1.getValue(), fn2.getValue());
         });
         System.out.println("排序完成");
     }
 
+    // 扫描指定路径下的vcf文件
+    public static List<Path> scan(Path path) throws IOException {
+        System.out.println("正在扫描" + path.toString() + "下的文件...");
+        List<Path> vcfFiles = Files.list(path)
+                .filter(p -> p.toString().toLowerCase().endsWith(".vcf"))
+                .collect(Collectors.toList());
+        System.out.println("扫描完成，共扫描到" + vcfFiles.size() + "个文件");
+        return vcfFiles;
+    }
+
     // 读取vcf
     public static List<VCard> read(String pathStr) throws IOException {
-        System.out.println("读取" + pathStr);
+        System.out.println("读取" + pathStr + "...");
         Path path = Paths.get(pathStr);
+        List<VCard> mergeList = null;
+        if (path.toFile().isFile()) {
+            // 文件
+            mergeList = Ezvcard.parse(path).all();
+        } else if (path.toFile().isDirectory()) {
+            // 目录
+            List<Path> vcfFiles = scan(path);
+            if (vcfFiles.size() > 0) {
+                mergeList = new ArrayList<>();
+            }
+            for (Path vcfFile : vcfFiles) {
+                System.out.println("读取" + pathStr + "...");
+                List<VCard> vCard = Ezvcard.parse(vcfFile).all();
+                VCard card = vCard.get(0);
+                mergeList.add(card);
+            }
+        } else {
+            System.out.println("读取失败");
+        }
+
         List<VCard> all = Ezvcard.parse(path).all();
         System.out.println("读取完成");
         System.out.println("共读取" + all.size() + "个联系人");
         return all;
+    }
+
+    // 创建一个输出流
+    public static OutputStreamWriter getOneOutputStreamWriter(String pathStr, boolean append) throws IOException {
+        if (pathStr == null) {
+            pathStr = "./" + System.currentTimeMillis() + ".vcf";
+            System.out.println("创建文件" + pathStr);
+        }
+        Path path = Paths.get(pathStr);
+        if (!path.toFile().exists()) {
+            Files.createDirectories(path.getParent());
+            path.toFile().createNewFile();
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(path.toFile(), append);
+        return new OutputStreamWriter(fileOutputStream, "utf-8");
     }
 
     // 按照FN写出到不同的文件
@@ -55,112 +94,76 @@ public class Main {
         System.out.println("mapping...");
         for (VCard vCard : vCards) {
             String fn = vCard.getFormattedName().getValue();
-            Path path = Paths.get("./tmp/" + fn + ".vcf");
-            if (!path.toFile().exists()) {
-                path.toFile().createNewFile();
+            try (OutputStreamWriter osw = getOneOutputStreamWriter("./tmp/" + fn + ".vcf", true)) {
+                Ezvcard.write(vCard).go(osw);
             }
-            Ezvcard.write(vCard).go(path, true);
         }
         System.out.println("mapped");
     }
 
-    // 扫描tmp路径下的vcf文件
-    public static List<Path> scan() throws IOException {
-        System.out.println("正在扫描tmp下的文件...");
-        // 得到tmp下的所有vcf文件
-        Path tmpDir = Paths.get("tmp");
-        List<Path> vcfFiles = Files.list(tmpDir)
-                .filter(p -> p.toString().toLowerCase().endsWith(".vcf"))
-                .collect(Collectors.toList());
-        System.out.println("扫描完成，共扫描到" + vcfFiles.size() + "个文件");
-        return vcfFiles;
-    }
-
     // 合并不冲突的文件
-    public static List<VCard> merge(List<Path> vcfFiles) throws IOException {
-        // 重复计数
-        long repeatCount = 0;
+    public static List<VCard> merge() throws IOException {
+        List<Path> vcfFiles = scan(Paths.get("./tmp"));
         // 合并所有的vcf文件
         List<VCard> mergeList = new ArrayList<>();
-        for (Path path : vcfFiles) {
-            System.out.println("正在合并" + path);
-            List<VCard> vCard = Ezvcard.parse(path).all();
+        for (Path vcfFile : vcfFiles) {
+            List<VCard> vCard = Ezvcard.parse(vcfFile).all();
             if (vCard.size() != 1) {
                 // 如果vcf文件包含不止一个vcard，跳过
-                repeatCount++;
                 continue;
             }
+            System.out.println("正在合并" + vcfFile);
             VCard card = vCard.get(0);
             mergeList.add(card);
             // 删除文件
-            path.toFile().delete();
+            vcfFile.toFile().delete();
         }
-        System.out.println("合并完成，共合并" + mergeList.size() + "个联系人，跳过" + repeatCount + "个重复文件");
+        System.out.println("合并完成，共合并" + mergeList.size() + "个联系人");
         return mergeList;
-    }
-
-    // 单纯合并
-    public static void mergeOnly(List<Path> vcfFiles) throws IOException {
-        Path filename = getOneFile();
-        for (Path path : vcfFiles) {
-            System.out.println("正在合并" + path);
-            List<VCard> vCards = Ezvcard.parse(path).all();
-            Ezvcard.write(vCards).go(filename, true);
-            // 删除文件
-            path.toFile().delete();
-        }
-        System.out.println("合并完成");
-        // changeEncoding(filename);
     }
 
     // 写出vcf
     public static void write(List<VCard> vCards) throws IOException {
         System.out.println("写出" + vCards.size() + "个联系人");
-        Path path = getOneFile();
-        Ezvcard.write(vCards).go(path);
-        System.out.println("写出完成");
+        try (OutputStreamWriter osw = getOneOutputStreamWriter(null, false)) {
+            Ezvcard.write(vCards).go(osw);
+            System.out.println("写出完成");
+        }
     }
 
-    // 创建一个文件
-    public static Path getOneFile() throws IOException {
-        String pathStr = "./" + System.currentTimeMillis() + ".vcf";
-        Path path = Paths.get(pathStr);
-        if (!path.toFile().exists()) {
-            path.toFile().createNewFile();
+    // 使用vscode逐个打开文件
+    public static void open() throws IOException {
+        List<Path> paths = scan(Paths.get("./tmp"));
+        for (int i = 0; i < paths.size(); i++) {
+            Path path = paths.get(i);
+            System.out.println((i + 1) + "/" + paths.size() + " " + path);
+            Runtime.getRuntime().exec("cmd /c code " + path.toString());
+            // 按任意键继续
+            System.in.read();
         }
-        return path;
     }
 
-    // 编码转换
-    public static void changeEncoding(Path path) throws IOException {
-        // 读取文件
-        File file = path.toFile();
-        FileInputStream fis = new FileInputStream(file);
-        InputStreamReader isr = new InputStreamReader(fis, "gb2312");
+    public static void mergeOnly() throws IOException {
+        List<VCard> vCards = read("./tmp");
+        sort(vCards);
+        write(vCards);
+    }
 
-        // 写入文件
-        File outputFile = new File(file.getParent(), "utf8_" + file.getName());
+    // 处理vcf文件
+    public static void process(String pathStr) throws IOException {
+        List<VCard> vCards = read(pathStr);
+        map(vCards);
+        List<VCard> mergedCards = merge();
+        sort(mergedCards);
+        write(mergedCards);
 
-        FileOutputStream fos = new FileOutputStream(outputFile);
-        OutputStreamWriter osw = new OutputStreamWriter(fos, "utf-8");
-
-        // 逐行读取并写入
-        BufferedReader br = new BufferedReader(isr);
-        BufferedWriter bw = new BufferedWriter(osw);
-        String line;
-        while ((line = br.readLine()) != null) {
-            bw.write(line);
-            bw.newLine();
-        }
-
-        // 关闭流
-        br.close();
-        bw.close();
+        // 处理冲突
+        open();
+        mergeOnly();
     }
 
     public static void main(String[] args) throws IOException {
-        // 合并tmp下的vcf文件
-        // List<VCard> read = read("./1691660368133.vcf");
+        process("./1691660368133.vcf");
     }
 
 }
