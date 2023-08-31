@@ -50,6 +50,7 @@ int main(int argc, char const *argv[])
 
     // 初始化三维数组dp
     size_t ***dp = (size_t ***)malloc(sizeof(size_t **) * (N + 1));
+    // dp[i][j][k]表示经过i次第一种移动、j次第二种移动和k次第三种移动后到达目标点的路径数量。
     for (size_t i = 0; i < N + 1; i++)
     {
         dp[i] = (size_t **)malloc(sizeof(size_t *) * (N + 1));
