@@ -20,7 +20,8 @@ int main()
         if (st[i] > 0) // 被喊过
             continue;
         st[h[i]]++;
-        num--;
+        if (st[h[i]] == 1)
+            num--; // ！！！num如果被喊过多次
     }
     cout << num << endl;
 
