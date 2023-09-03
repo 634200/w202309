@@ -1,0 +1,75 @@
+imgs = [
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1679922435118-bde3347e-b9fe-4138-8e16-0c231884ea5f.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1679294529375-4ee1cd26-8ebc-4abf-bff9-f8775e10c927.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1679970508234-3c6b8ecc-6372-4eb5-8c67-563054d1a72d.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1680232037132-d2fa8085-3847-46f2-ac62-14a6188492aa.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681093891854-26205c88-4c20-4b63-a2c3-02574778072f.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681217799861-dde49224-a767-489b-80b7-7d8d503e33cf.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681220124448-e8611612-97bc-4823-9b00-20dd9d579abf.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681220145378-86fabd90-a78c-4f60-9efa-eb2960915832.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681275459547-89d8d651-b52f-4d47-bff9-6db123624424.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681302411019-0c0425aa-6679-4b2b-a456-b31c151c6e83.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681354523290-b89d7e0d-b9aa-40f5-8d22-d3d09d02b136.png",
+    "https://cdn.nlark.com/yuque/0/2023/svg/1613913/1681723795095-828d2034-1e6c-4d98-8e47-573dd6b5463b.svg",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681724501227-077073b7-349d-414f-8916-a822eb86c772.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681725850466-2ecf12f4-8b66-469f-9d5d-377a33923b3c.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681816524680-e75cbe89-f90c-4ac4-8247-ec850308df65.png",
+    "https://cdn.nlark.com/yuque/0/2023/svg/1613913/1682073869709-2cba18c8-55bd-4bf1-a9df-ac784e30d89a.svg",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681829576654-d5e4b889-6fcf-4e65-91f1-8de8c78e98f1.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682322663331-25a89875-7ce3-40ae-9be7-9ea752fbab20.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682332243584-e7dd3527-b00f-4f65-a44c-19b88e0943fc.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681829576515-f8e3e993-f696-4d9d-9cdd-76ba3ba396c3.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682327167479-8f634931-f8ca-48fb-9566-c914f1795ff2.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682341921101-aa095a84-00cc-4815-b675-f4ed81cecf3b.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681829645812-0f0cad01-66d4-42fc-8111-091e33a062c6.png",
+    "https://cdn.nlark.com/yuque/0/2023/svg/1613913/1682569555020-b6cbc750-3171-44c6-810f-1c59e590b792.svg",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1681977849796-4b79ef53-8969-488d-aaa8-73fc333e8be7.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683348699620-39b5acb1-9f2a-4a7f-af3a-7829769ca567.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683508559265-41439f88-8a77-421b-8072-64ac18836e14.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683509053856-89249929-3fd0-46c9-bef0-05fdf1d4a57a.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683509270156-4f382e30-4c48-48f4-be07-502178966813.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683509501803-432efaf3-227a-488c-9751-67bdb8cbeb5e.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682662791504-6cf21127-d9da-4602-a076-ae38c298f0ac.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683170677428-6ffa28b6-d522-435f-9e50-20fe3ddfd024.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682513527616-e1e9054a-9049-4005-8c92-86392f3012a2.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682513900851-013516c0-b3d4-4a09-823a-e924a5fa8f2c.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683548784456-8c66fd8e-783e-4f89-b81f-d3f2771a3ef9.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683607956768-13b9f5cb-30fc-42a2-9119-ec7570b921f0.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1682516132127-cfbc53c8-5641-4098-9de8-025e2e71b2cf.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683766057952-6f218ecf-4d0a-44ee-a930-1fc7f19085db.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683773230399-b3fe0f68-f85a-4efb-bf38-d1783ea63d49.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683773247546-787b3fcf-ad8a-42d2-9a7b-2980eccff97d.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684124528903-feb1ce8f-302a-4872-a63d-ae5da99501eb.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683774822566-f6860477-868e-4115-8ee9-7fe9d787e7a9.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684143084003-df41f505-f8d0-4ab9-a684-5c39037e8e30.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683775747739-e428b122-ace8-4b33-b860-6a6c7ea11abd.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1683779334574-5040fa9c-d4cc-497a-aa2c-c937ccd2078d.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684149328177-6e1474c9-bec3-4b9a-afbe-b17b851f3ab1.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684143751616-6c4e0a2d-8507-452b-a6fc-8fe16d4c772d.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684143930294-6e36dd3d-c994-44b2-aa7c-a120b23ab044.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684152594737-ef7b01c4-304e-42d8-bcf7-00727014ec34.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684143982484-bac17232-7e72-4bca-9a74-311fa888a8ca.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144114094-7910b4e6-0073-4e01-9e37-7c165426a1d8.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144131164-13bd554b-1c97-4471-909e-7b0c7d5ebcd1.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144159433-2fbcf2fa-c2f3-482f-8fee-3473f5bb0fcf.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144366433-026a2e7c-a5fb-48ec-8b5a-ae390063b67e.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144739494-b078d166-5e09-421d-b237-7ee1a2c153f6.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144848621-d8577753-5a5b-402a-863b-617f43e35db1.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684144703862-26be3be1-dd2d-491e-8eca-2317495d77cb.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684147385110-bd82ed80-a65a-439f-b82d-fec40e40edec.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684152780642-b82e9976-170c-4118-bcd3-a319bc325774.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684154634081-c986db1e-7ab8-4fb6-ada7-f6999570310a.png",
+    "https://cdn.nlark.com/yuque/0/2023/png/1613913/1684156564048-2dbf1d6f-b0f0-4493-aef9-a2c1b7d22d58.png",
+]
+
+import requests
+import time
+import random
+import tqdm
+
+for img in tqdm.tqdm(imgs):
+    r = requests.get(img)
+    with open(img.split("/")[-1], "wb") as f:
+        f.write(r.content)
+
+    time.sleep(random.randint(1, 3))
